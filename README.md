@@ -10,7 +10,7 @@
 
 <p align="center">
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT"></a>
-  <img src="https://img.shields.io/badge/clojure-1.11.1-blue.svg" alt="Clojure">
+  <img src="https://img.shields.io/badge/clojure-1.12.1-blue.svg" alt="Clojure">
   <img src="https://img.shields.io/badge/built%20with-cljfx-brightgreen.svg" alt="Built with cljfx">
   <img src="https://img.shields.io/badge/platform-desktop-lightgrey.svg" alt="Platform: Desktop">
 </p>
