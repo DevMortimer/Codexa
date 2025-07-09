@@ -42,7 +42,7 @@
    :width 400
    :height 400
    :scene {:fx/type :scene
-           :accelerators {(new KeyCodeCombination KeyCode/V (into-array javafx.scene.input.KeyCombination$Modifier [KeyCombination/CONTROL_DOWN]))
+           :accelerators {(KeyCodeCombination. KeyCode/V (into-array javafx.scene.input.KeyCombination$Modifier [KeyCombination/CONTROL_DOWN]))
                           handle-paste}
            :root {:fx/type :v-box
                   :alignment :center
