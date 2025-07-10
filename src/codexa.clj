@@ -8,7 +8,7 @@
            [com.google.zxing BarcodeFormat]))
 
 (def ^:const +size+ 128)
-(def ^:const +initial-string+ "Drom some text on this window!")
+(def ^:const +initial-string+ "Drop some text on this window!")
 (def *state (atom {:text +initial-string+
                    :dragging? false}))
 
@@ -17,8 +17,9 @@
     (.acceptTransferModes event (into-array TransferMode [TransferMode/COPY]))))
 
 (defn- handle-drag-dropped [^javafx.scene.input.DragEvent event]
-  (let [db (.getDragboard event)]
+  (let ^javafx.scene.input.Dragboard [db (.getDragboard event)]
     (when (.hasString db)
+      (println (str "Got text " (.getString db)))
       (swap! *state assoc :text (.getString db))
       (.setDropCompleted event true)))
   (.consume event))
@@ -35,17 +36,30 @@
     (when (.hasString clipboard)
       (swap! *state assoc :text (.getString clipboard)))))
 
+(defn- reset [_]
+  (swap! *state assoc :text +initial-string+))
+
+(defn- hint-text []
+  {:fx/type :label
+   :text "Alternatively, you can Ctrl/Cmd + V"})
+
 (defn root [{:keys [text dragging?]}]
   {:fx/type :stage
    :showing true
    :title "Codexa"
    :width 400
    :height 400
+   :always-on-top true
    :scene {:fx/type :scene
-           :accelerators {(KeyCodeCombination. KeyCode/V (into-array javafx.scene.input.KeyCombination$Modifier [KeyCombination/CONTROL_DOWN]))
-                          handle-paste}
+           :accelerators {(KeyCodeCombination. KeyCode/V (into-array javafx.scene.input.KeyCombination$Modifier [KeyCombination/CONTROL_DOWN])) handle-paste
+
+                          (KeyCodeCombination. KeyCode/V (into-array javafx.scene.input.KeyCombination$Modifier [KeyCombination/META_DOWN])) handle-paste
+
+                          (KeyCodeCombination. KeyCode/ESCAPE (into-array javafx.scene.input.KeyCombination$Modifier [])) reset}
            :root {:fx/type :v-box
                   :alignment :center
+
+                  :style {:fx-background-color :white}
 
                   :on-drag-over handle-drag-over
                   :on-drag-dropped handle-drag-dropped
@@ -58,16 +72,14 @@
                                 :style {:-fx-font-size 20
                                         :-fx-background-color (if dragging? :lightgreen :transparent)
                                         :-fx-border-radius 12
-                                        :fx-padding 20}}
-                               {:fx/type :label
-                                :text "Alternatively, you can Ctrl + V"}]
+                                        :-fx-padding 20}}
+                               (hint-text)]
 
                               ;; If dropped some text then just show these:
                               [{:fx/type :image-view
                                 :mouse-transparent true
                                 :image (SwingFXUtils/toFXImage (create-qr-image text) nil)}
-                               {:fx/type :label
-                                :text "Alternatively, you can Ctrl + V"}])}}})
+                               (hint-text)])}}})
 
 (def renderer
   (fx/create-renderer
