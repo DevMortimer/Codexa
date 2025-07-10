@@ -43,6 +43,19 @@
   {:fx/type :label
    :text "Alternatively, you can Ctrl/Cmd + V"})
 
+(defn- title-text [text dragging?]
+  {:fx/type :label
+   :text text
+   :style {:-fx-font-size 20
+           :-fx-background-color (if dragging? :lightgreen :transparent)
+           :-fx-border-radius 12
+           :-fx-padding 20}})
+
+(defn- qr-image [text]
+  {:fx/type :image-view
+   :mouse-transparent true
+   :image (SwingFXUtils/toFXImage (create-qr-image text) nil)})
+
 (defn root [{:keys [text dragging?]}]
   {:fx/type :stage
    :showing true
@@ -67,18 +80,11 @@
                   :on-drag-exited (fn [_] (swap! *state assoc :dragging? false))
 
                   :children (if (= text +initial-string+)
-                              [{:fx/type :label
-                                :text text
-                                :style {:-fx-font-size 20
-                                        :-fx-background-color (if dragging? :lightgreen :transparent)
-                                        :-fx-border-radius 12
-                                        :-fx-padding 20}}
+                              [(title-text text dragging?)
                                (hint-text)]
 
                               ;; If dropped some text then just show these:
-                              [{:fx/type :image-view
-                                :mouse-transparent true
-                                :image (SwingFXUtils/toFXImage (create-qr-image text) nil)}
+                              [(qr-image text)
                                (hint-text)])}}})
 
 (def renderer
