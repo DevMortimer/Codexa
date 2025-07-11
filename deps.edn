@@ -8,4 +8,8 @@
         org.openjfx/javafx-web {:mvn/version "25-ea+23"}
         com.google.zxing/core {:mvn/version "3.5.3"}
         com.google.zxing/javase {:mvn/version "3.5.3"}}
- :paths ["src"]}
+ :paths ["src"]
+ :aliases
+ {:build
+  {:deps {io.github.clojure/tools.build {:mvn/version "0.10.9"}} 
+   :ns-default build}}}

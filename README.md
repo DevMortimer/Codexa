@@ -46,6 +46,12 @@ Codexa is built with a simple and powerful stack, showcasing the strengths of th
 *   **QR Code Engine:** [ZXing ("Zebra Crossing")](https://github.com/zxing/zxing)
 
 
+## Building from Source
+```bash
+# Build the uberjar
+clj -T:build uber
+```
+
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.

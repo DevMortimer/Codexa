@@ -1,4 +1,5 @@
 (ns codexa
+  (:gen-class)
   (:require [cljfx.api :as fx])
   (:import [javafx.scene.input TransferMode Clipboard KeyCode KeyCodeCombination KeyCombination]
            [javafx.embed.swing SwingFXUtils]
